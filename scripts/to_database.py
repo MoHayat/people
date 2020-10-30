@@ -82,6 +82,11 @@ def get_update_or_create(ModelCls, data, lookup_keys):
         created = True
     return obj, created, updated
 
+def fetch_person_email(data):
+    try: 
+        return data["contact_details"][0]["email"]
+    except:
+        return ""
 
 def load_person(data):
     # import has to be here so that Django is set up
@@ -98,6 +103,7 @@ def load_person(data):
         death_date=data.get("death_date", ""),
         image=data.get("image", ""),
         extras=data.get("extras", {}),
+        email=fetch_person_email(data)
     )
     person, created, updated = get_update_or_create(Person, fields, ["id"])
 
